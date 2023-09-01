@@ -16,6 +16,7 @@ import SignUp from './chapter_11/SignUp';
 import Calculator from './chapter_12/Calculator';
 import ProfileCard from './chapter_13/ProfileCard';
 import DarkOrLight from './chapter_14/DarkOrLight';
+import Blocks from './chapter_15/Blocks';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 
@@ -32,8 +33,9 @@ setInterval(() => {
       <AttendanceBook />
       <SignUp />
       <Calculator />
-      <ProfileCard /> */}
-      <DarkOrLight />
+      <ProfileCard />
+      <DarkOrLight /> */}
+      <Blocks />
     </React.StrictMode>
   );
 }, 1000);
