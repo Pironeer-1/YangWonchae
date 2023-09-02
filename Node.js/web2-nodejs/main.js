@@ -33,7 +33,7 @@ const app = http.createServer(function(request, response) {
             response.writeHead(200);
             response.end(template);
         } else {
-            fs.readFile(`data/${queryData.id}.html`, 'utf8', function(err, desctiption) {
+            fs.readFile(`data/${queryData.id}`, 'utf8', function(err, desctiption) {
                 const title = queryData.id;
                 const template = `
                 <!doctype html>
