@@ -84,11 +84,11 @@ const app = http.createServer(function(request, response) {
             const post = qs.parse(body);
             const title = post.title;
             const description = post.description;
-            console.log(title);
-            console.log(description);
+            fs.writeFile(`data/${title}`, description, 'utf8', function(err) {
+                response.writeHead(302, {Location: `/?id=${title}`});
+                response.end();
+            });
         });
-        response.writeHead(200);
-        response.end('success');
     } else {
         response.writeHead(404);
         response.end('Not found');
