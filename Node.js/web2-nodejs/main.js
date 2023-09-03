@@ -2,8 +2,8 @@ const http = require('http');
 const fs = require('fs');
 const url = require('url');
 const qs = require('querystring');
-
 const template = require('./lib/template.js');
+const path = require('path');
 
 const app = http.createServer(function(request, response) {
     let _url = request.url;
@@ -27,7 +27,8 @@ const app = http.createServer(function(request, response) {
         } else {
             fs.readdir('./data', function(error, filelist) {
                 const list = template.list(filelist);
-                fs.readFile(`data/${queryData.id}`, 'utf8', function(error, description) {
+                const filteredId = path.parse(queryData.id).base;
+                fs.readFile(`data/${filteredId}`, 'utf8', function(error, description) {
                     const html = template.HTML(title, list,
                         `<h2>${title}</h2><p>${description}</p>`,
                         `<a href="/create">create</a>
@@ -77,7 +78,8 @@ const app = http.createServer(function(request, response) {
     } else if(pathname === '/update') {
         fs.readdir('./data', function(error, filelist) {
             const list = template.list(filelist);
-            fs.readFile(`data/${queryData.id}`, 'utf8', function(error, description) {
+            const filteredId = path.parse(queryData.id).base;
+            fs.readFile(`data/${filteredId}`, 'utf8', function(error, description) {
                 const html = template.HTML(title, list,
                     `<form action="/update_process" method="post">
                         <input type="hidden" name="id" value="${title}">
@@ -119,7 +121,8 @@ const app = http.createServer(function(request, response) {
         request.on('end', function() {
             const post = qs.parse(body);
             const id = post.id;
-            fs.unlink(`data/${id}`, function(error) {
+            const filteredId = path.parse(id).base;
+            fs.unlink(`data/${filteredId}`, function(error) {
                 response.writeHead(302, {Location: `/`});
                 response.end();
             });
