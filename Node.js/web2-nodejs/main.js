@@ -1,6 +1,7 @@
 const http = require('http');
 const fs = require('fs');
 const url = require('url');
+const qs = require('querystring');
 
 function templateHTML(title, list, body) {
     return `
@@ -74,6 +75,20 @@ const app = http.createServer(function(request, response) {
             response.writeHead(200);
             response.end(template);
         });
+    } else if(pathname === '/create_process') {
+        let body = '';
+        request.on('data', function(data) {
+            body = body + data;
+        });
+        request.on('end', function() {
+            const post = qs.parse(body);
+            const title = post.title;
+            const description = post.description;
+            console.log(title);
+            console.log(description);
+        });
+        response.writeHead(200);
+        response.end('success');
     } else {
         response.writeHead(404);
         response.end('Not found');
