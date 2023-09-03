@@ -1,5 +1,5 @@
-var mysql = require('mysql2');
-var connection = mysql.createPool({
+const mysql = require('mysql2');
+const connection = mysql.createPool({
     host: 'localhost',
     user: 'ywonchae1',
     password: 'ywonchae1',
