@@ -24,10 +24,14 @@ module.exports = {
     }
     list = list+'</ul>';
     return list;
-  }, authorSelect:function(authors) {
+  }, authorSelect:function(authors, author_id) {
     let tag = '';
     for(let i = 0; i < authors.length; i++) {
-        tag += `<option value=${authors[i].id}>${authors[i].name}</option>`;
+        let selected = '';
+        if(authors[i].id == author_id) {
+          selected = 'selected';
+        }
+        tag += `<option value=${authors[i].id} ${selected}>${authors[i].name}</option>`;
     }
     return `<select name="author">${tag}</select>`;
   }
