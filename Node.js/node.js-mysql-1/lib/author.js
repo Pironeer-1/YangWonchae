@@ -20,12 +20,43 @@ module.exports = {
                             border: 1px solid black;
                         }
                     </style>
+                    <form action="/author/create_process" method="post">
+                        <p>
+                            <input type="text" name="name" placeholder="name">
+                        </p>
+                        <p>
+                            <textarea name="profile" placeholder="description"></textarea>
+                        </p>
+                        <p>
+                            <input type="submit">
+                        </p>
+                    </form>
                     `,
-                    `<a href="/create">create</a>`
+                    ``
                 );
                 response.writeHead(200);
                 response.end(html);
             });
         });
+    },
+    create_process: function(request, response) {
+        let body = '';
+        request.on('data', function(data) {
+            body += data;
+        });
+        request.on('end', function() {
+            const post = qs.parse(body);
+            db.query(`
+            INSERT INTO author(name, profile)
+            VAlUES(?, ?)`,
+            [post.name, post.profile],
+            function(error, result) {
+                if(error) {
+                    throw error;
+                }
+                response.writeHead(302, {Location: `/author`});
+                response.end();
+            })
+        })
     }
 }
