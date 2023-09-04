@@ -119,7 +119,34 @@ module.exports = {
                 }
                 response.writeHead(302, {Location: `/author`});
                 response.end();
-            })
-        })
+            });
+        });
+    },
+    delete_process: function(request, response) {
+        let body = '';
+        request.on('data', function(data) {
+            body += data;
+        });
+        request.on('end', function() {
+            const post = qs.parse(body);
+            db.query(`
+            DELETE FROM topic WHERE author_id=?`,
+            [post.id],
+            function(error1, result) {
+                if(error1) {
+                    throw error;
+                }
+                db.query(`
+                DELETE FROM author WHERE id=?`,
+                [post.id],
+                function(error, result) {
+                    if(error) {
+                        throw error;
+                    }
+                    response.writeHead(302, {Location: `/author`});
+                    response.end();
+                });
+            });
+        });
     }
 }
