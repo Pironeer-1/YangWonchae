@@ -1,18 +1,8 @@
 var http = require('http');
-var fs = require('fs');
 var url = require('url');
 var qs = require('querystring');
 var template = require('./lib/template.js');
-var path = require('path');
-var sanitizeHtml = require('sanitize-html');
-const mysql = require('mysql2');
-const db = mysql.createPool({
-    host: 'localhost',
-    user: 'ywonchae1',
-    password: 'ywonchae1',
-    database: 'opentutorials',
-    port: 3306
-});
+const db = require('./lib/db.js');
 
 var app = http.createServer(function (request, response) {
     var _url = request.url;
