@@ -35,5 +35,19 @@ module.exports = {
         tag += `<option value=${authors[i].id} ${selected}>${authors[i].name}</option>`;
     }
     return `<select name="author">${tag}</select>`;
+  }, authorTable:function(authors) {
+    let tag = '<table>';
+    for(let i = 0; i < authors.length; i++) {
+        tag += `
+        <tr>
+            <td>${authors[i].name}</td>
+            <td>${authors[i].profile}</td>
+            <td>update</td>
+            <td>delete</td>
+        </tr>
+        `;
+    }
+    tag += `</table>`;
+    return tag;
   }
 }
