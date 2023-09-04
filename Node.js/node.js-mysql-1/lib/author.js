@@ -2,6 +2,7 @@ const db = require('./db.js');
 const template = require('./template.js');
 const url = require('url');
 var qs = require('querystring');
+const sanitizeHtml = require('sanitize-html');
 
 module.exports = {
     home: function(request, response) {
@@ -83,10 +84,10 @@ module.exports = {
                                 <input type="hidden" name="id" value=${author[0].id}>
                             </p>
                             <p>
-                                <input type="text" name="name" placeholder="name" value=${author[0].name}>
+                                <input type="text" name="name" placeholder="name" value=${sanitizeHtml(author[0].name)}>
                             </p>
                             <p>
-                                <textarea name="profile" placeholder="description">${author[0].profile}</textarea>
+                                <textarea name="profile" placeholder="description">${sanitizeHtml(author[0].profile)}</textarea>
                             </p>
                             <p>
                                 <input type="submit" value="update">

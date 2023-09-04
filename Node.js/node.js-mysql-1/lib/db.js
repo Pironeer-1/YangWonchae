@@ -5,6 +5,5 @@ const db = mysql.createPool({
     password: 'ywonchae1',
     database: 'opentutorials',
     port: 3306,
-    multipleStatements: true
 });
 module.exports = db;
