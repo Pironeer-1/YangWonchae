@@ -143,12 +143,23 @@ var app = http.createServer(function(request,response){
 });
 app.listen(3000);
 */
+var fs = require('fs');
+var template = require('./lib/template.js');
 const express = require('express');
 const app = express();
 const port = 3000;
 
 app.get('/', function (request, response) {
-    response.send('Hello World!');
+    fs.readdir('./data', function(error, filelist){
+        const title = 'Welcome';
+        const description = 'Hello, Node.js';
+        const list = template.list(filelist);
+        const html = template.HTML(title, list,
+          `<h2>${title}</h2>${description}`,
+          `<a href="/create">create</a>`
+        );
+        response.send(html);
+    });
 });
 
 app.get('/page', function (request, response) {
