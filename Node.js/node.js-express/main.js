@@ -145,6 +145,8 @@ app.listen(3000);
 */
 var fs = require('fs');
 var template = require('./lib/template.js');
+var path = require('path');
+var sanitizeHtml = require('sanitize-html');
 const express = require('express');
 const app = express();
 const port = 3000;
@@ -162,8 +164,28 @@ app.get('/', function (request, response) {
     });
 });
 
-app.get('/page', function (request, response) {
-    response.send('/page');
+app.get('/page/:pageId', function (request, response) {
+    fs.readdir('./data', function(error, filelist){
+        const filteredId = path.parse(request.params.pageId).base;
+        fs.readFile(`data/${filteredId}`, 'utf8', function(err, description){
+          const title = request.params.pageId;
+          const sanitizedTitle = sanitizeHtml(title);
+          const sanitizedDescription = sanitizeHtml(description, {
+            allowedTags:['h1']
+          });
+          const list = template.list(filelist);
+          const html = template.HTML(sanitizedTitle, list,
+            `<h2>${sanitizedTitle}</h2>${sanitizedDescription}`,
+            ` <a href="/create">create</a>
+              <a href="/update?id=${sanitizedTitle}">update</a>
+              <form action="delete_process" method="post">
+                <input type="hidden" name="id" value="${sanitizedTitle}">
+                <input type="submit" value="delete">
+              </form>`
+          );
+          response.send(html);
+        });
+    });
 });
 
 app.listen(port, () => {
