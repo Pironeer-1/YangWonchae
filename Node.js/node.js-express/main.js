@@ -188,6 +188,41 @@ app.get('/page/:pageId', function (request, response) {
     });
 });
 
+app.get('/create', function(request, response) {
+    fs.readdir('./data', function(error, filelist){
+        const title = 'WEB - create';
+        const list = template.list(filelist);
+        const html = template.HTML(title, list, `
+          <form action="/create_process" method="post">
+            <p><input type="text" name="title" placeholder="title"></p>
+            <p>
+              <textarea name="description" placeholder="description"></textarea>
+            </p>
+            <p>
+              <input type="submit">
+            </p>
+          </form>
+        `, '');
+        response.send(html);
+    });
+});
+
+app.post('/create_process', function(request, response) {
+    const body = '';
+    request.on('data', function(data){
+        body = body + data;
+    });
+    request.on('end', function(){
+        const post = qs.parse(body);
+        const title = post.title;
+        const description = post.description;
+        fs.writeFile(`data/${title}`, description, 'utf8', function(err){
+            response.writeHead(302, {Location: `/?id=${title}`});
+            response.end();
+        });
+    });
+})
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
