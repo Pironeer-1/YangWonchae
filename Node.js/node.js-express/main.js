@@ -146,6 +146,7 @@ app.listen(3000);
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const compression = require('compression');
+const helmet = require('helmet');
 const topicRouter = require('./routes/topic.js');
 const indexRouter = require('./routes/index.js');
 const express = require('express');
@@ -155,6 +156,7 @@ const port = 3000;
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
 app.use(express.static('public'));
+app.use(helmet());
 
 app.get('*', function (request, response, next) {
     fs.readdir('./data', function (error, filelist) {
