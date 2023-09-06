@@ -156,6 +156,7 @@ const port = 3000;
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
+app.use(express.static('public'));
 
 app.get('*', function (request, response, next) {
     fs.readdir('./data', function (error, filelist) {
@@ -169,7 +170,8 @@ app.get('/', function (request, response) {
     const description = 'Hello, Node.js';
     const list = template.list(request.list);
     const html = template.HTML(title, list,
-        `<h2>${title}</h2>${description}`,
+        `<h2>${title}</h2>${description}
+        <img src="/images/nina.jpg" style="width:300px; display:block; margin-top:10px;">`,
         `<a href="/create">create</a>`
     );
     response.send(html);
