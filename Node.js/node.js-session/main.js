@@ -1,17 +1,27 @@
-var express = require('express');
-var app = express();
-var fs = require('fs');
-var sanitizeHtml = require('sanitize-html');
-var bodyParser = require('body-parser');
-var compression = require('compression');
-var topicRouter = require('./routes/topic');
-var indexRouter = require('./routes/index');
-var helmet = require('helmet');
+const express = require('express');
+const app = express();
+const fs = require('fs');
+const sanitizeHtml = require('sanitize-html');
+const bodyParser = require('body-parser');
+const compression = require('compression');
+const topicRouter = require('./routes/topic');
+const indexRouter = require('./routes/index');
+const authRouter = require('./routes/auth');
+const helmet = require('helmet');
+const session = require('express-session');
+const FileStore = require('session-file-store')(session);
 
 app.use(helmet());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(compression());
 app.use(express.static('public'));
+app.use(session({
+    secret: 'asdfqwer!$@#@!SFEse',
+    resave: false,
+    saveUninitialized: true,
+    store: new FileStore()
+}));
+
 app.get('*', function(request, response, next) {
     fs.readdir('./data', function(error, filelist) {
         request.list = filelist;
@@ -21,6 +31,7 @@ app.get('*', function(request, response, next) {
 
 app.use('/', indexRouter);
 app.use('/topic', topicRouter);
+app.use('/auth', authRouter);
 
 app.use(function(req, res, next) {
     res.status(404).send('Sorry cant find that!');

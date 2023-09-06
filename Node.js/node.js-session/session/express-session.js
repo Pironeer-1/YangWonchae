@@ -1,13 +1,15 @@
 var express = require('express')
 var parseurl = require('parseurl')
 var session = require('express-session')
+const FileStore = require('session-file-store')(session);
 
 var app = express()
 
 app.use(session({
   secret: 'keyboard cat',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: true,
+  store: new FileStore()
 }))
 
 app.get('/', function (req, res, next) {
