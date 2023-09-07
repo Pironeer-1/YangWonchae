@@ -19,7 +19,20 @@ app.use(session({
     store:new FileStore()
 }));
 const passport = require('passport')
-    , LocalStrategy = require('passport-local').Strategy;
+const LocalStrategy = require('passport-local').Strategy;
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.serializeUser(function(user, done) {
+    console.log('serializeUser', user);
+    done(null, user.email);
+});
+
+passport.deserializeUser(function(user, done) {
+    console.log('dserializeUser', user);
+    done(null, authData);
+});
 
 var authData = {
     email: 'egoing777@gmail.com',
@@ -70,7 +83,10 @@ passport.use(new LocalStrategy(
 }));
 
 app.post('/auth/login_process', 
-    passport.authenticate('local', {failureRedirect: '/auth/login' }),
+    passport.authenticate('local', {
+        // successRedirect: '/',
+        failureRedirect: '/auth/login'
+    }),
     function(req, res) {
         res.redirect('/');
     }
