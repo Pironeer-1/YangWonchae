@@ -21,6 +21,54 @@ app.use(session({
 const passport = require('passport')
     , LocalStrategy = require('passport-local').Strategy;
 
+var authData = {
+    email: 'egoing777@gmail.com',
+    password: '111111',
+    nickname: 'egoing'
+}
+
+passport.use(new LocalStrategy(
+    {
+        usernameField: 'email',
+        passwordField: 'pwd'
+    },
+    function verify(username, password, cb) {
+        console.log('LocalStrategy', username, password);
+        if(username === authData.email) {
+            console.log(1);
+            if(password === authData.password) {
+                console.log(2);
+                return cb(null, authData, {
+                    message: "Welcome."
+                });
+            } else {
+                console.log(3);
+                return cb(null, false, {
+                    message: 'Incorrect password.'
+                });
+            }
+        } else {
+            console.log(4);
+            return cb(null, false, {
+                message: 'Incorrect username.'
+            });
+        }
+    /*
+    db.get('SELECT * FROM users WHERE username = ?', [ username ], function(err, user) {
+        if (err) { return cb(err); }
+        if (!user) { return cb(null, false, { message: 'Incorrect username or password.' }); }
+    
+        crypto.pbkdf2(password, user.salt, 310000, 32, 'sha256', function(err, hashedPassword) {
+        if (err) { return cb(err); }
+        if (!crypto.timingSafeEqual(user.hashed_password, hashedPassword)) {
+            return cb(null, false, { message: 'Incorrect username or password.' });
+        }
+        return cb(null, user);
+        });
+    });
+    */
+}));
+
 app.post('/auth/login_process', 
     passport.authenticate('local', {failureRedirect: '/auth/login' }),
     function(req, res) {
