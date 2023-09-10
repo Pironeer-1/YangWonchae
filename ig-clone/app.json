@@ -1,0 +1,11 @@
+{
+  "expo": {
+    "name": "ig-clone",
+    "slug": "ig-clone",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  },
+  "name": "ig-clone"
+}
