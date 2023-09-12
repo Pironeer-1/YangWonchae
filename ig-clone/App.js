@@ -1,8 +1,6 @@
-import React from 'react';
-import HomeScreen from './screens/HomeScreen';
+import React from 'react'
+import AuthNavigation from './ANavigation'
 
 export default function App() {
-  return (
-    <HomeScreen />
-  );
+  return <AuthNavigation />
 }
