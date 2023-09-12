@@ -19,6 +19,7 @@ const HomeScreen = ({navigation}) => {
         setPosts({ id: doc.id, ...doc.data()});
       })
     }
+    console.log(posts)
     fetchData()
   }, [])
   return (
@@ -26,7 +27,7 @@ const HomeScreen = ({navigation}) => {
       <Header navigation={navigation} />
       <Stories />
       <ScrollView>
-        {setPosts.map((post, index) => (
+        {posts.map((post, index) => (
           <Post post={post} key={index} />
         ))}
       </ScrollView>
