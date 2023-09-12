@@ -6,7 +6,7 @@ import * as Yup from 'yup'
 import Validator from 'email-validator'
 import { app, auth, db } from '../../firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { collection, addDoc } from "firebase/firestore"; 
+import { collection, addDoc, doc, setDoc } from "firebase/firestore"; 
 
 const SignupForm = ({navigation}) => {
     const SignupFormSchema = Yup.object().shape({
@@ -20,7 +20,8 @@ const SignupForm = ({navigation}) => {
             const authUser = await createUserWithEmailAndPassword(auth, email, password)
             console.log("🔥 Firebase User Created Successfuly 🔥", email, password)
             const picture = await getRandomProfilePicture()
-            const docRef = await addDoc(collection(db, "users"), {
+            // await db.collection('users').doc(authUser.user.email).set({
+            const docRef = await setDoc(doc(db, "users", authUser.user.email), {
                 owner_uid: authUser.user.uid,
                 username: username,
                 email: authUser.user.email,
