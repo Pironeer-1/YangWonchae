@@ -119,7 +119,16 @@ const PostImage = ({post}) => (
 const PostFooter = ({handleLike, post}) => (
     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
         <View style={styles.leftFooterIconsContainer}>
-            <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[0].imageUrl} />
+            <TouchableOpacity onPress={() => handleLike(post)}>
+                <Image
+                    style={styles.footerIcon}
+                    source={
+                        post.likes_by_users.includes(auth.currentUser.email)
+                        ? postFooterIcons[0].likedImageUrl
+                        : postFooterIcons[0].imageUrl
+                    }
+                />
+            </TouchableOpacity>
             <Icon imgStyle={styles.footerIcon} imgUrl={postFooterIcons[1].imageUrl} />
             <Icon
                 imgStyle={[styles.footerIcon, styles.shareIcon]}

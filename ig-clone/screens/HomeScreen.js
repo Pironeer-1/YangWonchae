@@ -6,16 +6,17 @@ import Post from '../components/home/Post'
 import { POSTS } from '../data/posts'
 import BottomTabs, { bottomTabIcons } from '../components/home/BottomTabs'
 import { db } from '../firebase'
-import { collectionGroup, query, where, getDocs } from "firebase/firestore";  
+import { collectionGroup, query, where, getDocs, orderBy } from "firebase/firestore";  
 
 const HomeScreen = ({navigation}) => {
   const [posts, setPosts] = useState([])
   
   useEffect(() => {
     async function fetchData() {
+      // const querySnapshot = await getDocs(query(collectionGroup(db, 'posts'), orderBy('createdAt', 'desc')))
       const querySnapshot = await getDocs(query(collectionGroup(db, 'posts')))
       querySnapshot.forEach((doc) => {
-        setPosts(doc.data());
+        setPosts({ id: doc.id, ...doc.data()});
       })
     }
     fetchData()
